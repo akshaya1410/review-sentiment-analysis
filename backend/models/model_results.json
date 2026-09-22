@@ -1,0 +1,119 @@
+{
+    "best_model": "Linear SVM",
+    "dataset_stats": {
+        "total_reviews": 49582,
+        "positive_reviews": 24884,
+        "negative_reviews": 24698
+    },
+    "models": {
+        "Logistic Regression": {
+            "accuracy": 0.8996,
+            "precision": 0.8928,
+            "recall": 0.909,
+            "f1_score": 0.9008,
+            "confusion_matrix": [
+                [
+                    4397,
+                    543
+                ],
+                [
+                    453,
+                    4524
+                ]
+            ],
+            "train_time_seconds": 0.41
+        },
+        "Multinomial Naive Bayes": {
+            "accuracy": 0.8781,
+            "precision": 0.8707,
+            "recall": 0.8891,
+            "f1_score": 0.8798,
+            "confusion_matrix": [
+                [
+                    4283,
+                    657
+                ],
+                [
+                    552,
+                    4425
+                ]
+            ],
+            "train_time_seconds": 0.03
+        },
+        "Linear SVM": {
+            "accuracy": 0.9009,
+            "precision": 0.8969,
+            "recall": 0.9068,
+            "f1_score": 0.9018,
+            "confusion_matrix": [
+                [
+                    4421,
+                    519
+                ],
+                [
+                    464,
+                    4513
+                ]
+            ],
+            "train_time_seconds": 2.11
+        }
+    },
+    "restaurant_domain": {
+        "best_model": "Logistic Regression",
+        "dataset_stats": {
+            "total_reviews": 1000,
+            "positive_reviews": 500,
+            "negative_reviews": 500
+        },
+        "models": {
+            "Logistic Regression": {
+                "accuracy": 1.0,
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1_score": 1.0,
+                "confusion_matrix": [
+                    [
+                        100,
+                        0
+                    ],
+                    [
+                        0,
+                        100
+                    ]
+                ]
+            },
+            "Multinomial Naive Bayes": {
+                "accuracy": 1.0,
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1_score": 1.0,
+                "confusion_matrix": [
+                    [
+                        100,
+                        0
+                    ],
+                    [
+                        0,
+                        100
+                    ]
+                ]
+            },
+            "Linear SVM": {
+                "accuracy": 1.0,
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1_score": 1.0,
+                "confusion_matrix": [
+                    [
+                        100,
+                        0
+                    ],
+                    [
+                        0,
+                        100
+                    ]
+                ]
+            }
+        }
+    }
+}

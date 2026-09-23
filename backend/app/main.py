@@ -1,3 +1,4 @@
+import nltk
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
@@ -5,23 +6,33 @@ from app.database import engine, Base
 from app.services.model_service import model_service
 from app.routes import sentiment, batch, dashboard, chatbot
 
-# 1. Ensure table schema is created
+# 1. Auto-download NLTK corpora during server boot
+def init_nltk():
+    resources = ['stopwords', 'wordnet', 'punkt', 'omw-1.4']
+    for r in resources:
+        try:
+            nltk.download(r, quiet=True)
+        except Exception as e:
+            print(f"[WARNING] NLTK download failed for {r}: {e}")
+
+init_nltk()
+
+# 2. Ensure database schema is created
 Base.metadata.create_all(bind=engine)
 
-# 2. Database Migration Failsafe: Add 'domain' column to existing SQLite databases if missing
+# 3. Database Migration Failsafe: Add 'domain' column to existing SQLite databases if missing
 try:
     with engine.connect() as conn:
         conn.execute(text("ALTER TABLE prediction_history ADD COLUMN domain VARCHAR(30) DEFAULT 'movie'"))
         conn.commit()
         print("[INFO] Database Migration: Added 'domain' column to prediction_history table.")
 except Exception:
-    # Column already exists
     pass
 
 app = FastAPI(
     title="Multi-Domain Sentiment Analysis & AI Chatbot API",
     description="NLP-powered FastAPI service using TF-IDF, Scikit-Learn models, and AI Restaurant Response Chatbot.",
-    version="2.1.0",
+    version="2.2.0",
     docs_url="/docs",
     redoc_url="/redoc"
 )
@@ -37,7 +48,8 @@ app.add_middleware(
 
 @app.on_event("startup")
 def startup_event():
-    """Load ML model artifacts during backend application startup."""
+    """Load ML model artifacts & verify NLTK during backend application startup."""
+    init_nltk()
     success = model_service.load_artifacts()
     if success:
         print("[INFO] Sentiment analysis models and vectorizers loaded successfully.")
@@ -55,7 +67,7 @@ def root_status():
     return {
         "status": "online",
         "app": "Multi-Domain Sentiment Analysis & AI Chatbot API",
-        "version": "2.1.0",
+        "version": "2.2.0",
         "docs": "/docs",
         "movie_model_loaded": model_service.is_loaded(domain="movie"),
         "restaurant_model_loaded": model_service.is_loaded(domain="restaurant")
